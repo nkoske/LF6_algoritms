@@ -1,0 +1,37 @@
+public class AlgorithmKadane {
+    public static void main (String args[]) {
+
+    }
+    public static void run(int []inputSequence,boolean silent) {
+        int highestItemVal=0;
+        int highestItemPos=0;
+        int lowestItemPos=0;
+        int itemResult=0;
+        for (int item=0; inputSequence.length > item; item++) {
+            itemResult= itemResult+inputSequence[item];
+            if (itemResult <= 0) {
+                itemResult=0;
+                lowestItemPos=item+1;
+            }
+            if (itemResult > highestItemVal) {
+                highestItemVal=itemResult;
+                highestItemPos=item;
+            }
+        }
+        int[] resultarray = LF6AlgoritmsMain.buildResultSequence(highestItemPos,lowestItemPos,inputSequence);
+        if (silent != true) {
+            System.out.println(
+                "Kadane Algorithm: " +
+                        "\n" +
+                        "highest Result: "+highestItemVal+
+                        "\n" +
+                        "buying Day "+(lowestItemPos+1) +
+                        "\n" +
+                        "selling Day "+(highestItemPos+1) +
+                        "\n" +
+                        "used Sequence: "+LF6AlgoritmsMain.sequenceToStr(resultarray) +
+                        "\n"
+            );
+        }
+    }
+}
