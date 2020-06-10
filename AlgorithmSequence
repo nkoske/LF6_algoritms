@@ -1,0 +1,43 @@
+public class AlgorithmSequence {
+
+
+
+    public static void run(int[] inputSequence,boolean silent) {
+        var highestResult=0;
+        var highestBuyday=0;
+        var highestSellDay=0;
+        for (int buyDay = 0; buyDay < inputSequence.length ;buyDay++) {
+
+            for (int sellDay = buyDay; sellDay < inputSequence.length ;sellDay++ ) {
+                var days = sellDay-buyDay;
+                var result= inputSequence[buyDay];
+                for (int dev=buyDay; dev < sellDay ;dev++) {
+                    result=result+inputSequence[dev+1];
+                    if(result > highestResult) {
+                        highestResult = result;
+                        highestBuyday=buyDay;
+                        highestSellDay=sellDay;
+                    }
+                }
+            }
+        }
+
+        var resultArray = LF6AlgoritmsMain.buildResultSequence(highestSellDay,highestBuyday,inputSequence);
+
+        if (silent != true) {
+            System.out.println(
+                    "Sequence: " +
+                            "\n" +
+                            "highest Result: "+highestResult+
+                            "\n" +
+                            "buying Day "+(highestBuyday+1) +
+                            "\n" +
+                            "selling Day "+(highestSellDay+1) +
+                            "\n" +
+                            "used Sequence: "+ LF6AlgoritmsMain.sequenceToStr(resultArray) +
+                            "\n"
+            );
+        }
+
+    }
+}
