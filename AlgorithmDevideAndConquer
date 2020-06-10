@@ -1,0 +1,80 @@
+public class AlgorithmDevideAndConquer {
+
+    static int[][] devideAndConquerHighest (int [] devideAndConquerSequence,int startDay ) {
+        int highestResult = -1;
+        int [] highestSequence={};
+        int[][] subarray= LF6AlgoritmsMain.splitArr(devideAndConquerSequence);
+        int endDay=-1;
+
+        int sum = LF6AlgoritmsMain.sumOfArr(devideAndConquerSequence);
+        if (sum> highestResult) {
+            highestResult = sum;
+            highestSequence=devideAndConquerSequence;
+            endDay = (startDay-1)+devideAndConquerSequence.length;
+        }
+        int []highestLeftArr= LF6AlgoritmsMain.highestSumOfArr(subarray[0],"DESC");
+        int []highestRightArr= LF6AlgoritmsMain.highestSumOfArr(subarray[1],"ASC");
+
+        if (highestResult < (highestLeftArr[0]+highestRightArr[0])) {
+            highestResult = (highestLeftArr[0]+highestRightArr[0]);
+            startDay=highestLeftArr[1]+1;
+            endDay=highestRightArr[1]+1+subarray[0].length;
+        }
+        sum = LF6AlgoritmsMain.sumOfArr(subarray[0]);
+        if (sum> highestResult) {
+            highestResult = sum;
+            highestSequence=subarray[0];
+            endDay = (startDay-1)+subarray[0].length;
+        }
+
+        sum = LF6AlgoritmsMain.sumOfArr(subarray[1]);
+        if (sum > highestResult) {
+            startDay=(startDay-1)+subarray[0].length;
+            endDay = (startDay-1)+subarray[1].length;
+            highestResult = sum;
+            highestSequence=subarray[1];
+
+        }
+
+        for (int subArr=0; subArr < subarray.length; subArr++) {
+            if (subarray[subArr].length > 1) {
+                var subhigh = devideAndConquerHighest(subarray[subArr],startDay);
+                if (subhigh[0][0] > highestResult) {
+                    highestResult = subhigh[0][0];
+                    highestSequence = subhigh[1];
+                    startDay = subhigh[2][0];
+                    endDay= subhigh[2][1];
+                }
+            }
+        }
+        int [][] returnArr={{highestResult},highestSequence,{startDay,endDay}};
+        return returnArr;
+    }
+
+    public static void run(int [] devideAndConquerSequence,boolean silent) {
+        var highestResult=-1;
+        int[] highestResultSequence=new int[devideAndConquerSequence.length];
+        var recentSum = LF6AlgoritmsMain.sumOfArr(devideAndConquerSequence);
+        if (recentSum > highestResult) {
+            highestResult=recentSum;
+            highestResultSequence=devideAndConquerSequence;
+        }
+        int [][]seq=devideAndConquerHighest(devideAndConquerSequence,1);
+
+        int[] resultarray = LF6AlgoritmsMain.buildResultSequence(seq[2][1]+1,seq[2][0]+1,devideAndConquerSequence);
+        if (silent != true) {
+            System.out.println(
+                    "divide and conquer: " +
+                            "\n" +
+                            "highest Result: "+seq[0][0]+
+                            "\n" +
+                            "buying Day "+ seq[2][0] +
+                            "\n" +
+                            "selling Day "+ seq[2][1] +
+                            "\n" +
+                            "used Sequence: "+LF6AlgoritmsMain.sequenceToStr(resultarray) +
+                            "\n"
+            );
+        }
+    }
+}
