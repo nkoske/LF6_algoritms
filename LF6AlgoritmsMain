@@ -1,0 +1,148 @@
+import java.util.Random;
+
+public class LF6AlgoritmsMain {
+
+    static void timeDisplay(long starttime, long endtime, String message) {
+        var elapsedTime = endtime-starttime;
+        long[] secondScope = new long[4];
+        for (int sec=0; sec<3; sec++) {
+            if (elapsedTime % 1000 == 0) {
+                secondScope[sec] = elapsedTime / 1000;
+                elapsedTime = (elapsedTime-secondScope[sec])/1000;
+                break;
+            } else {
+                secondScope[sec] = elapsedTime % 1000;
+                elapsedTime = (elapsedTime-secondScope[sec])/1000;
+            }
+        }
+        System.out.println(message+"\n"+elapsedTime+ " sec  "+secondScope[2] + " milliS  "+secondScope[1]+" mikroS  "+secondScope[0]+ " nanoS");
+    }
+
+    static String sequenceToStr(int [] inputSequence) {
+        var returnVal="";
+        for (int x=0; x < inputSequence.length;x++) {
+            returnVal=returnVal+inputSequence[x]+" | ";
+        }
+        return returnVal;
+    }
+
+    static int sumOfArr(int[] arr) {
+        int returnNum=0;
+        for (int entry=0; entry<arr.length; entry++) {
+            returnNum =returnNum+ arr[entry];
+        }
+        return returnNum;
+    }
+
+    static int [] highestSumOfArr (int[] arr,String direction) {
+        int returnNum=-1;
+        int pos=-1;
+        int counter=0;
+
+        if (direction == "ASC") {
+            for (int entry=0; entry<arr.length; entry++) {
+                counter = counter+ arr[entry];
+                if (counter > returnNum) {
+                    returnNum= counter;
+                    pos= entry;
+                }
+            }
+        } else if (direction == "DESC") {
+            for (int entry=arr.length-1; entry>= 0; entry--) {
+                counter = counter+ arr[entry];
+                if (counter > returnNum) {
+                    returnNum= counter;
+                    pos= entry;
+
+                }
+            }
+        }
+        int [] returnVal= {returnNum,pos};
+        return returnVal;
+    }
+
+    static int[][] splitArr(int[] arr) {
+        int [] retarr01 = new int[0];
+        int [] retarr02 = new int[0];
+        if (arr.length % 2 == 0) {
+             retarr01 = new int[arr.length/2];
+             retarr02 = new int[arr.length/2];
+        } else {
+             retarr01 = new int[((arr.length-1)/2)+1];
+             retarr02 = new int[((arr.length-1)/2)];
+        }
+        for(var entry=0; entry< arr.length; entry++){
+            if (entry < retarr01.length) {
+                retarr01[entry]=arr[entry];
+            }else {
+                retarr02[entry-retarr01.length]=arr[entry];
+            }
+        }
+        int[][] splitted_arr = new int[2][];
+        splitted_arr[0] = retarr01;
+        splitted_arr[1] = retarr02;
+        return splitted_arr;
+    }
+
+    public static int[] buildResultSequence (int sellDay,int Buyday,int[] inputSequence) {
+        int[] resultSequence = new int[sellDay-Buyday+1];
+        for (var loop = 0; loop < resultSequence.length ;loop++) {
+            resultSequence[loop] = inputSequence[Buyday+loop];
+        }
+        return resultSequence;
+    }
+
+    static int[] resultSequencebuilder(int highestItemPos,int lowestItemPos,int [] inputSequence) {
+        int[] resultarray= new int[highestItemPos-lowestItemPos+1];
+        for (int x = lowestItemPos; x < highestItemPos;x++) {
+            resultarray[x-lowestItemPos]=inputSequence[x];
+        }
+        resultarray[highestItemPos]=inputSequence[highestItemPos];
+        return resultarray;
+    }
+
+
+    private static int getRandomNumberInRange(int min, int max) {
+
+        if (min >= max) {
+            throw new IllegalArgumentException("max must be greater than min");
+        }
+
+        Random r = new Random();
+        return r.nextInt((max - min) + 1) + min;
+    }
+    public static int[] sequence (String mode,int length) {
+        if (mode == "hardCoded") {
+            int[] sequence = {-1,8,-6,2,1,-4,-5,5,3,-2,3,-1,-5,-2,-9,4,7,-6,5,3,-2,-4,8,-2,3,4,2,-1,-3,4};
+            return sequence;
+        } else if (mode == "generated") {
+            int[] sequence = new int[length];
+            for (int loop = 0; loop < length; loop++) {
+                sequence[loop] = getRandomNumberInRange(-10,10);
+
+            }
+            return sequence;
+        }
+        return null;
+    }
+    public static int[] sequence= sequence("generated",500);
+    public static int testAmount=50;
+
+    public static void main(String[] args){
+
+        System.out.println("Starting Sequence\n");
+        System.out.println(sequenceToStr(sequence));
+        System.out.println("\n\n\n");
+
+        var startTime= System.nanoTime();
+
+        AlgorithmSequence.run(sequence,false);
+        AlgoAvgTimeTester.run(testAmount,"sequence",sequence);
+        AlgorithmDevideAndConquer.run(sequence,false);
+        AlgoAvgTimeTester.run(testAmount,"devideAndConquer",sequence);
+        AlgorithmKadane.run(sequence,false);
+        AlgoAvgTimeTester.run(testAmount,"kadane",sequence);
+
+        timeDisplay(startTime,System.nanoTime(),"\nProgram running time: ");
+    }
+}
