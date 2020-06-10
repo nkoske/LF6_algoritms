@@ -1,0 +1,64 @@
+public class AlgoAvgTimeTester {
+    static void timeDisplay(long starttime, long endtime, String message) {
+        var elapsedTime = endtime-starttime;
+        long[] secondScope = new long[4];
+        for (int sec=0; sec<3; sec++) {
+            if (elapsedTime % 1000 == 0) {
+                secondScope[sec] = elapsedTime / 1000;
+                elapsedTime = (elapsedTime-secondScope[sec])/1000;
+                break;
+            } else {
+                secondScope[sec] = elapsedTime % 1000;
+                elapsedTime = (elapsedTime-secondScope[sec])/1000;
+            }
+        }
+        System.out.println(message+"\n"+elapsedTime+ " sec  "+secondScope[2] + " milliS  "+secondScope[1]+" mikroS  "+secondScope[0]+ " nanoS");
+    }
+
+    public static long calculateAverage (long starttime,long endtime,int Amount) {
+        var elapsedTime = endtime-starttime;
+        return elapsedTime / Amount;
+
+    }
+
+    static void timeDisplayAverage(long average,String message) {
+        var elapsedTime = average;
+        long[] secondScope = new long[4];
+        for (int sec=0; sec<3; sec++) {
+            if (elapsedTime % 1000 == 0) {
+                secondScope[sec] = elapsedTime / 1000;
+                elapsedTime = (elapsedTime-secondScope[sec])/1000;
+                break;
+            } else {
+                secondScope[sec] = elapsedTime % 1000;
+                elapsedTime = (elapsedTime-secondScope[sec])/1000;
+            }
+        }
+        System.out.println(message+"\n"+elapsedTime+ " sec  "+secondScope[2] + " milliS  "+secondScope[1]+" mikroS  "+secondScope[0]+ " nanoS"+'\n'+'\n'+'\n');
+    }
+
+
+    public static void run (int testAmount,String algorithm,int[] sequence) {
+        long startTime = System.nanoTime();
+
+        for (int loopCount = 0; loopCount < testAmount; loopCount++) {
+            if (algorithm == "devideAndConquer") {
+                AlgorithmDevideAndConquer.run(sequence,true);
+
+            } else if (algorithm == "kadane"){
+                AlgorithmKadane.run(sequence, true);
+
+            }else if (algorithm == "sequence") {
+                AlgorithmSequence.run(sequence,true);
+
+            }
+        }
+
+        long average=calculateAverage(startTime,System.nanoTime(),testAmount);
+        var message = "Average time of  Algorithm "+algorithm+
+                "\n   with "+testAmount+" runs is"+
+                "\n   and array length "+sequence.length+" is : ";
+        timeDisplayAverage(average,message);
+    }
+}
+
