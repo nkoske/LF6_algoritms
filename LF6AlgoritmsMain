@@ -101,7 +101,6 @@ public class LF6AlgoritmsMain {
         return resultarray;
     }
 
-
     private static int getRandomNumberInRange(int min, int max) {
 
         if (min >= max) {
@@ -119,7 +118,6 @@ public class LF6AlgoritmsMain {
             int[] sequence = new int[length];
             for (int loop = 0; loop < length; loop++) {
                 sequence[loop] = getRandomNumberInRange(-10,10);
-
             }
             return sequence;
         }
@@ -127,22 +125,17 @@ public class LF6AlgoritmsMain {
     }
     public static int[] sequence= sequence("generated",500);
     public static int testAmount=50;
-
     public static void main(String[] args){
-
         System.out.println("Starting Sequence\n");
         System.out.println(sequenceToStr(sequence));
         System.out.println("\n\n\n");
-
         var startTime= System.nanoTime();
-
         AlgorithmSequence.run(sequence,false);
         AlgoAvgTimeTester.run(testAmount,"sequence",sequence);
         AlgorithmDevideAndConquer.run(sequence,false);
         AlgoAvgTimeTester.run(testAmount,"devideAndConquer",sequence);
         AlgorithmKadane.run(sequence,false);
         AlgoAvgTimeTester.run(testAmount,"kadane",sequence);
-
         timeDisplay(startTime,System.nanoTime(),"\nProgram running time: ");
     }
 }
